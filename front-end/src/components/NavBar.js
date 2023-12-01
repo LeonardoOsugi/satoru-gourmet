@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 
@@ -9,15 +10,21 @@ export default function Navbar(){
                     <p>Seutoru Gourmet</p>
                 </Logo>
                 <Botoes>
-                    <button>
-                        Pedidos
-                    </button>
-                    <button>
-                        Cozinha
-                    </button>
-                    <button>
-                        Retirada
-                    </button>
+                    <Link to="/homepage">
+                        <button>
+                            Pedidos
+                        </button>
+                    </Link>
+                    <Link to="/kitchen">
+                        <button>
+                            Cozinha
+                        </button>
+                    </Link>
+                    <Link to="/withdrawal">
+                        <button>
+                            Retirada
+                        </button>
+                    </Link>
                 </Botoes>
         </NavBar>
     )
