@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model order {
+  id                  Int           @id @default(autoincrement())
+  image               String
+  product_name        String        @db.VarChar(255)
+  product_description String        @db.VarChar(255)
+  total_price         String
+  form                PaymentForm   @default(DINHEIRO)
+  category            OrderCategory
+  name                String        @db.VarChar(255)
+  code                String        @db.VarChar(10)
+  servations          String        @db.VarChar(255)
+  created_at          DateTime      @default(dbgenerated("timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone)")) @db.Timestamp(6)
+}
+
+model order_ready {
+  id                  Int           @id @default(autoincrement())
+  image               String
+  product_name        String        @db.VarChar(255)
+  product_description String        @db.VarChar(255)
+  total_price         String
+  form                PaymentForm   @default(DINHEIRO)
+  category            OrderCategory
+  name                String        @db.VarChar(255)
+  code                String        @db.VarChar(10)
+  servations          String        @db.VarChar(255)
+  created_at          DateTime      @default(dbgenerated("timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone)")) @db.Timestamp(6)
+}
+
+model products {
+  id                  Int           @id @default(autoincrement())
+  image               String
+  product_name        String        @db.VarChar(255)
+  product_description String        @db.VarChar(255)
+  price               String
+  category            OrderCategory
+  created_at          DateTime      @default(dbgenerated("timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone)")) @db.Timestamp(6)
+}
+
+enum OrderCategory {
+  COMBOS
+  ACOMPANHAMENTOS
+  BEBIDAS
+  SOBREMESAS
+}
+
+enum PaymentForm {
+  DEBITO
+  CREDITO
+  DINHEIRO
+}
