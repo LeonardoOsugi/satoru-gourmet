@@ -43,6 +43,15 @@ model products {
   price               String
   category            OrderCategory
   created_at          DateTime      @default(dbgenerated("timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone)")) @db.Timestamp(6)
+  cart                cart[]
+}
+
+model cart {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  servations String   @db.VarChar(255)
+  created_at DateTime @default(dbgenerated("timezone('America/Sao_Paulo'::text, (CURRENT_DATE)::timestamp with time zone)")) @db.Timestamp(6)
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum OrderCategory {
