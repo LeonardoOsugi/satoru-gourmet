@@ -1,7 +1,24 @@
 import styled from 'styled-components';
 import Navbar from '../../components/NavBar';
+import { useEffect, useState } from 'react';
+import axios from "axios";
 
 export default function HomePage(){
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        async function getProducts(){
+            try{
+                const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products`);
+                setProducts(res.data);
+            }catch(e){
+                console.log("deu erro direto");
+                alert(e.response.data.message);
+            }
+        }
+
+        getProducts();
+    },[products, setProducts])
     return(
         <>
             <Navbar/>
@@ -32,6 +49,18 @@ export default function HomePage(){
                 </AlignCategoria>
                 <h1>Produtos</h1>
                 <p>Selecione um produto para adicionar ao seu pedido</p>
+                <BoxProducts>
+                    {products.map((p) => 
+                        <BoxProduct key={p.id}>
+                            <img src={p.image} alt="BURGUE"/>
+                            <BackgroudDescription>
+                                <p>{p.product_name}</p>
+                                <p>{p.product_description}</p>
+                                <p>R${(p.price / 100).toLocaleString("pt-BR", { style: "decimal", minimumFractionDigits: 2 })}</p>
+                            </BackgroudDescription>
+                        </BoxProduct>
+                    )}
+                </BoxProducts>
             </BoxContent>
         </>
     )
@@ -81,4 +110,36 @@ const BoxCategoria = styled.div`
     img{
         width: 45%;
     }
+`;
+
+const BoxProducts = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+`;
+const BoxProduct = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 10px 5px 10px lightslategray;
+    margin-bottom: 10%;
+    margin-left: 10px;
+    img{
+        width: 75%;
+        margin-bottom: 10px;
+    }
+`;
+
+const BackgroudDescription = styled.div`
+    background-color: red;
+    color: yellow;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 10px 5px 10px lightslategray;
 `;
